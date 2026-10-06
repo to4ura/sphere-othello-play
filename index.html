@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#4a958a">
-<meta name="description" content="指で球体を回して遊ぶ、64マスの立体オセロ。同じ画面で2人対戦。">
+<meta name="description" content="指で球体を回して遊ぶ、64マスの立体オセロ。ソロ・同じ画面で2人・フレンド・ワールド対戦。">
 <title>球体オセロ</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%23285e57' stroke='%23f6c45a' stroke-width='3'/%3E%3Cellipse cx='32' cy='32' rx='12' ry='29' fill='none' stroke='%234a958a'/%3E%3Cpath d='M3 32h58' stroke='%234a958a'/%3E%3Ccircle cx='24' cy='24' r='9' fill='%23f3efc9'/%3E%3Ccircle cx='41' cy='40' r='9' fill='%2324524c'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="./style.min.css">
@@ -14,10 +14,11 @@
  <header class="menu-heading"><span class="menu-orbit" aria-hidden="true">◉</span><h1>球体オセロ</h1><p>回して、はさんで、ひっくり返そう。</p></header>
  <div class="mode-options">
   <button class="mode-card solo-card" id="start-solo"><span class="mode-icon" aria-hidden="true">★</span><span><strong>ソロチャレンジ</strong><small>勝利を重ねて、もっと強いCPUへ</small></span><b id="solo-level">Lv.1</b></button>
-  <button class="mode-card" id="start-friend"><span class="mode-icon" aria-hidden="true">♟</span><span><strong>フレンド対戦</strong><small>合言葉でつながる、友達との一局</small></span><b class="soon-badge">準備中</b></button>
-  <button class="mode-card" id="start-world"><span class="mode-icon" aria-hidden="true">◎</span><span><strong>ワールド対戦</strong><small>世界のプレイヤーと、どこでも対戦</small></span><b class="soon-badge">準備中</b></button>
+  <button class="mode-card" id="start-friend"><span class="mode-icon" aria-hidden="true">♟</span><span><strong>フレンド対戦</strong><small>合言葉でつながる、友達との一局</small></span><b class="soon-badge" id="friend-badge">準備中</b></button>
+  <button class="mode-card" id="start-world"><span class="mode-icon" aria-hidden="true">◎</span><span><strong>ワールド対戦</strong><small>世界のプレイヤーと、どこでも対戦</small></span><b class="soon-badge" id="world-badge">準備中</b></button>
  </div>
  <p class="campaign-record" id="campaign-record">Lv.1からスタート。勝つと次のレベルへ。</p>
+ <button id="online-resume" class="resume-room" hidden>進行中の対局へ戻る</button><p id="menu-connection" class="subtle" role="status"></p>
  <div class="menu-bottom"><button id="start-local">同じ端末で2人</button><button id="menu-rules">? 遊び方</button></div>
  <p class="menu-footnote">64マスの球面オセロ · 進行はこの端末に保存</p>
 </section>
@@ -31,6 +32,7 @@
  <div class="turn-line"><h2 id="turn-title">黒の番です</h2><span id="legal-count">置ける場所 4</span><button id="pass" hidden>パスする</button><button id="cpu-retry" hidden>再試行</button></div>
  <p id="message" class="sr-only" role="status" aria-live="polite"></p>
 </section>
+<div id="online-invite" class="online-invite" hidden><span>部屋 <b id="invite-code"></b></span><span>合言葉 <b id="invite-secret"></b></span><button id="copy-invite">コピー</button></div><div class="online-connection-row"><span id="online-connection" hidden role="status"></span><button id="online-retry" hidden>再接続</button></div>
 <section class="arena" aria-label="回転できる球体盤面">
  <div class="globe-host" id="globe-host">
   <canvas id="globe" tabindex="0" role="application" aria-label="64マスの球体盤。タップで配置、スワイプで回転。"></canvas>
@@ -53,14 +55,24 @@
   <h2 id="rules-title">ぐるっと回して、はさもう。</h2>
   <p>ソロではあなたが黒、CPUが白。端末2人対戦では黒・白を交互に操作します。自分の石で相手の石をはさむと反転。最後に石が多い方の勝ちです。</p>
   <div class="rule-steps"><div><b>01</b><p><strong>スワイプで球体を回転</strong><br>2本指で拡大。裏側も自由に見られます。</p></div><div><b>02</b><p><strong>光るリングにタップで置く</strong><br>合法手だけに置けます。確認操作はありません。</p></div><div><b>03</b><p><strong>裏側のリングも探してみよう</strong><br>「裏側」で反対側へ。「正面」で視点を戻せます。</p></div></div>
-  <div class="rule-note"><h3>64枚の四角形で、ぐるっとつながる盤</h3><p>立方体の表面を <strong>4 × 4 × 2</strong> に分割したつながりを保ち、球面上でマスの広さが近くなるよう頂点を調整しています。どのマスも4つの角を持ち、極や継ぎ目に盤の端はありません。</p><p><strong>縦横4方向＋斜め4方向</strong>ではさみます。辺から入ったら反対の辺へ、頂点から入ったら反対の頂点へ進むのが、この盤の「直線」です。継ぎ目でも続きます。</p><p>斜めは、4面が集まる頂点の向かいのマスへ進みます。<strong>金色の点がある8つの頂点では3面しか集まらないため、斜めだけ停止</strong>します。縦横は止まりません。</p><p>同じマスを二度通る前に探索を止めます。置いた石自身で1周まるごとはさむことはできません。</p></div>
+  <div class="rule-note"><h3>64枚の四角形で、ぐるっとつながる盤</h3><p>立方体の表面を <strong>4 × 4 × 2</strong> に分割したつながりを保ち、球面上の円に沿って格子を並べています。マスの広さには少し違いがあります。どのマスも4つの角を持ち、極や継ぎ目に盤の端はありません。</p><p><strong>縦横4方向＋斜め4方向</strong>ではさみます。辺から入ったら反対の辺へ、頂点から入ったら反対の頂点へ進むのが、この盤の「直線」です。継ぎ目でも続きます。</p><p>斜めは、4面が集まる頂点の向かいのマスへ進みます。<strong>金色の点がある8つの頂点では3面しか集まらないため、斜めだけ停止</strong>します。縦横は止まりません。</p><p>同じマスを二度通る前に探索を止めます。置いた石自身で1周まるごとはさむことはできません。</p></div>
   <p class="subtle">「透視」で盤面だけを半透明にできます。裏側の駒は破線の輪で区別します。置けるのは手前のマスだけ。裏側へ置くときは球体を回してください。</p>
-  <p class="subtle">置ける場所がなければパス。両者とも置けなくなった時点で終局します。途中でページを閉じると対局はリセットされます。</p>
+  <p class="subtle">置ける場所がなければパス。両者とも置けなくなった時点で終局します。ソロ・端末2人対戦はページを閉じるとリセットされます。通信対戦は同じブラウザから復帰できます。対局中に90秒以上接続が切れると終了し、片方だけ切れた場合はそのプレイヤーの負けです。</p>
   <p class="subtle">PC：ドラッグ・ホイール操作。矢印キーで回転、盤面にフォーカスしてNで候補へ移動、Enterで配置、Escで解除。</p>
   <button class="wide-button" id="rules-done">遊ぶ</button>
 </dialog>
 <dialog id="restart-dialog" aria-labelledby="restart-title"><p class="eyebrow">もう一度</p><h2 id="restart-title">最初から始めますか？</h2><p>今の対局を終了し、黒の手番から始めます。</p><div class="dialog-actions"><button id="restart-cancel">続ける</button><button class="primary" id="restart-confirm">やり直す</button></div></dialog>
 <dialog id="leave-dialog" aria-labelledby="leave-title"><p class="eyebrow">メニュー</p><h2 id="leave-title">メニューへ戻りますか？</h2><p>進行中の対局は終了します。ソロの到達レベルは残ります。</p><div class="dialog-actions"><button id="leave-cancel">続ける</button><button id="leave-confirm">戻る</button></div></dialog>
-<dialog id="online-dialog" aria-labelledby="online-title"><p class="eyebrow">ただいま準備中</p><h2 id="online-title">フレンド対戦</h2><p>通信対戦はまだ開始できません。ソロチャレンジと同じ端末での2人対戦を遊べます。</p><button class="wide-button" id="online-close">メニューへ</button></dialog>
+<dialog id="online-dialog" aria-labelledby="online-title"><p class="eyebrow">オンラインで、ひと勝負。</p><h2 id="online-title">フレンド対戦</h2>
+ <p id="online-unavailable">通信対戦は準備中です。ソロと同じ端末の2人対戦で遊べます。</p>
+ <div id="online-form" hidden><div id="friend-form">
+  <button class="wide-button" id="online-create">部屋をつくる</button><p class="subtle">招待を受け取ったら、下に入力して参加できます。</p>
+  <label class="room-field">部屋番号<input id="room-code" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="6桁の番号"></label>
+  <label class="room-field">合言葉<input id="room-secret" maxlength="16" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="16文字の合言葉"></label>
+  <button class="wide-button" id="online-join">部屋に参加する</button></div>
+  <button class="wide-button" id="online-match">対戦相手を探す</button>
+  <p class="subtle">先に入った人が黒です。ページを開いたままお待ちください。対局中に90秒以上つながらないと終了します。</p>
+ </div><p id="online-status" role="status" aria-live="polite"></p><button class="wide-button secondary" id="online-close">メニューへ</button>
+</dialog>
 <noscript>このゲームにはJavaScriptが必要です。ブラウザでJavaScriptを有効にしてください。</noscript>
 </body></html>
