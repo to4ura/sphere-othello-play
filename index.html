@@ -11,49 +11,39 @@
 </head>
 <body>
 <main class="game">
-<header class="masthead">
-  <div class="wordmark"><h1>球体オセロ</h1></div>
-  <button class="icon-button" id="rules-open" aria-label="遊び方と球面ルールを開く">?</button>
-</header>
-<section class="scoreboard" aria-label="得点">
-  <div class="score-card active" id="black-card"><span class="stone black" aria-hidden="true"></span><div><span class="player-label">黒</span><span class="player-note" id="black-note">あなたの番</span></div><strong id="black-score">2</strong></div>
-  <span class="versus">VS</span>
-  <div class="score-card" id="white-card"><span class="stone white" aria-hidden="true"></span><div><span class="player-label">白</span><span class="player-note" id="white-note">待機中</span></div><strong id="white-score">2</strong></div>
+<header class="masthead"><h1>球体オセロ</h1><span class="local-badge">2人対戦</span></header>
+<section class="match-header" aria-label="手番と得点">
+ <div class="scoreboard">
+  <div class="score-card active" id="black-card"><span class="stone black" aria-hidden="true"></span><span class="player-label">黒</span><strong id="black-score">2</strong><span class="player-note" id="black-note">手番</span></div>
+  <div class="score-card" id="white-card"><span class="stone white" aria-hidden="true"></span><span class="player-label">白</span><strong id="white-score">2</strong><span class="player-note" id="white-note">待機</span></div>
+ </div>
+ <div class="turn-line"><h2 id="turn-title">黒の番です</h2><span id="legal-count">置ける場所 4</span><button id="pass" hidden>パスする</button></div>
+ <p id="message" class="sr-only" role="status" aria-live="polite"></p>
 </section>
 <section class="arena" aria-label="回転できる球体盤面">
-  <div class="arena-top"><span class="local-badge">2人対戦</span><span class="progress-meter" id="progress" role="progressbar" aria-label="石が置かれているマスの割合" aria-valuemin="0" aria-valuemax="64" aria-valuenow="4">6%</span></div>
-  <div class="globe-host" id="globe-host">
-    <canvas id="globe" tabindex="0" role="application" aria-label="64マスの球体盤。スワイプで回転。候補ボタンで選択、配置ボタンで石を置けます。キーボードは矢印で回転、Nで候補、Enterで配置。"></canvas>
-    
-    <div class="coordinate" id="coordinate" aria-hidden="true">スワイプで回転</div>
-    <div class="zoom-controls"><button id="zoom-out" aria-label="球体を縮小">−</button><button id="zoom-in" aria-label="球体を拡大">＋</button></div>
-  </div>
-  <div class="view-controls">
-    <button class="pill" id="reverse"><span aria-hidden="true">↻</span> 裏側へ</button>
-    <span class="rotate-note">スワイプで回転</span>
-    <button class="pill" id="reset-view">正面に戻す</button>
-  </div>
+ <div class="globe-host" id="globe-host">
+  <canvas id="globe" tabindex="0" role="application" aria-label="64マスの球体盤。タップで配置、スワイプで回転。"></canvas>
+  <p class="tap-hint" id="tap-hint">光るリングをタップして置く</p>
+  <span class="view-hint" id="view-hint">スワイプで回転</span>
+ </div>
+ <div class="view-controls" role="toolbar" aria-label="球体の視点">
+  <button id="reverse"><span aria-hidden="true">↻</span> 裏側</button>
+  <button id="reset-view"><span aria-hidden="true">⌖</span> 正面</button>
+  <span class="toolbar-divider" aria-hidden="true"></span>
+  <button class="zoom-button" id="zoom-out" aria-label="球体を縮小">−</button>
+  <button class="zoom-button" id="zoom-in" aria-label="球体を拡大">＋</button>
+ </div>
 </section>
-<section class="play-panel">
-  <div class="turn-line"><h2 id="turn-title">黒の番です</h2><span id="legal-count">置ける場所 4</span></div>
-  <p id="message" role="status" aria-live="polite">光るリングが置ける場所です</p>
-  <div class="move-controls">
-    <button class="candidate-button" id="next-move"><span class="target-icon" aria-hidden="true">◎</span><span>候補を見る<small id="candidate-caption">裏側の候補にも移動</small></span><span class="next-icon" aria-hidden="true">›</span></button>
-    <button class="place-button" id="place" disabled>場所を選んでね</button>
-    <button class="place-button" id="pass" hidden>パスする</button>
-  </div>
-  <div class="hint-line"><span class="hint-ring"></span><span id="help-line">タップで選択 →「ここに置く」で確定</span></div>
-</section>
-<footer><span>64四角形 · 斜めは金色の点で止まる</span><button id="restart">やり直す</button></footer>
+<footer><span>64マス</span><button id="rules-open">? ルール</button><button id="restart">やり直す</button></footer>
 </main>
 <dialog id="rules-dialog" aria-labelledby="rules-title">
   <div class="dialog-heading"><p class="eyebrow">遊び方</p><button class="icon-button" id="rules-close" aria-label="遊び方を閉じる">×</button></div>
   <h2 id="rules-title">ぐるっと回して、はさもう。</h2>
   <p>1台のスマホで黒・白を交互に操作します。自分の石で相手の石をはさむと反転。最後に石が多い方の勝ちです。</p>
-  <div class="rule-steps"><div><b>01</b><p><strong>スワイプで球体を回転</strong><br>2本指で拡大。裏側も自由に見られます。</p></div><div><b>02</b><p><strong>リングをタップして選択</strong><br>「候補を見る」で置けるマスを正面へ。</p></div><div><b>03</b><p><strong>「ここに置く」で確定</strong><br>選択中は反転する石に輪がつきます。</p></div></div>
-  <div class="rule-note"><h3>64枚の四角形で、ぐるっとつながる盤</h3><p>立方体の表面を <strong>4 × 4 × 2</strong> に分割して球面に丸めています。どのマスも4つの角を持ち、極や継ぎ目に盤の端はありません。</p><p><strong>縦横4方向＋斜め4方向</strong>ではさみます。辺から入ったら反対の辺へ、頂点から入ったら反対の頂点へ進むのが、この盤の「直線」です。継ぎ目でも続きます。</p><p>斜めは、4面が集まる頂点の向かいのマスへ進みます。<strong>金色の点がある8つの頂点では3面しか集まらないため、斜めだけ停止</strong>します。縦横は止まりません。</p><p>同じマスを二度通る前に探索を止めます。置いた石自身で1周まるごとはさむことはできません。</p></div>
+  <div class="rule-steps"><div><b>01</b><p><strong>スワイプで球体を回転</strong><br>2本指で拡大。裏側も自由に見られます。</p></div><div><b>02</b><p><strong>光るリングにタップで置く</strong><br>合法手だけに置けます。確認操作はありません。</p></div><div><b>03</b><p><strong>裏側のリングも探してみよう</strong><br>「裏側」で反対側へ。「正面」で視点を戻せます。</p></div></div>
+  <div class="rule-note"><h3>64枚の四角形で、ぐるっとつながる盤</h3><p>立方体の表面を <strong>4 × 4 × 2</strong> に分割したつながりを保ち、球面上でマスの広さが近くなるよう頂点を調整しています。どのマスも4つの角を持ち、極や継ぎ目に盤の端はありません。</p><p><strong>縦横4方向＋斜め4方向</strong>ではさみます。辺から入ったら反対の辺へ、頂点から入ったら反対の頂点へ進むのが、この盤の「直線」です。継ぎ目でも続きます。</p><p>斜めは、4面が集まる頂点の向かいのマスへ進みます。<strong>金色の点がある8つの頂点では3面しか集まらないため、斜めだけ停止</strong>します。縦横は止まりません。</p><p>同じマスを二度通る前に探索を止めます。置いた石自身で1周まるごとはさむことはできません。</p></div>
   <p class="subtle">置ける場所がなければパス。両者とも置けなくなった時点で終局します。途中でページを閉じると対局はリセットされます。</p>
-  <p class="subtle">PC：ドラッグ・ホイール操作。矢印キーで回転、Nで候補、Enterで配置、Escで選択解除。</p>
+  <p class="subtle">PC：ドラッグ・ホイール操作。矢印キーで回転、盤面にフォーカスしてNで候補へ移動、Enterで配置、Escで解除。</p>
   <button class="wide-button" id="rules-done">遊ぶ</button>
 </dialog>
 <dialog id="restart-dialog" aria-labelledby="restart-title"><p class="eyebrow">もう一度</p><h2 id="restart-title">最初から始めますか？</h2><p>今の対局を終了し、黒の手番から始めます。</p><div class="dialog-actions"><button id="restart-cancel">続ける</button><button class="primary" id="restart-confirm">やり直す</button></div></dialog>
