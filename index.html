@@ -2,17 +2,17 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080f19">
+<meta name="theme-color" content="#4a958a">
 <meta name="description" content="指で球体を回して遊ぶ、64マスの立体オセロ。同じ画面で2人対戦。">
-<title>ORBIT OTHELLO — 球体オセロ</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%23153432' stroke='%23c9fa79' stroke-width='3'/%3E%3Cellipse cx='32' cy='32' rx='12' ry='29' fill='none' stroke='%235c9b7c'/%3E%3Cpath d='M3 32h58' stroke='%235c9b7c'/%3E%3Ccircle cx='24' cy='24' r='9' fill='%23f8f7ed'/%3E%3Ccircle cx='41' cy='40' r='9' fill='%23060d18'/%3E%3C/svg%3E">
+<title>球体オセロ</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%23285e57' stroke='%23f6c45a' stroke-width='3'/%3E%3Cellipse cx='32' cy='32' rx='12' ry='29' fill='none' stroke='%234a958a'/%3E%3Cpath d='M3 32h58' stroke='%234a958a'/%3E%3Ccircle cx='24' cy='24' r='9' fill='%23f3efc9'/%3E%3Ccircle cx='41' cy='40' r='9' fill='%2324524c'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="./style.min.css">
 <script type="module" src="./game.min.js"></script>
 </head>
 <body>
 <main class="game">
 <header class="masthead">
-  <div class="wordmark"><span class="logo-orbit" aria-hidden="true">◉</span><div><h1>ORBIT <span>OTHELLO</span></h1><p>球体オセロ <span class="divider">/</span> 64四角形</p></div></div>
+  <div class="wordmark"><h1>球体オセロ</h1></div>
   <button class="icon-button" id="rules-open" aria-label="遊び方と球面ルールを開く">?</button>
 </header>
 <section class="scoreboard" aria-label="得点">
@@ -21,11 +21,11 @@
   <div class="score-card" id="white-card"><span class="stone white" aria-hidden="true"></span><div><span class="player-label">白</span><span class="player-note" id="white-note">待機中</span></div><strong id="white-score">2</strong></div>
 </section>
 <section class="arena" aria-label="回転できる球体盤面">
-  <div class="arena-top"><span class="local-badge">2人対戦</span><span id="progress">4 / 64 マス</span></div>
+  <div class="arena-top"><span class="local-badge">2人対戦</span><span class="progress-meter" id="progress" role="progressbar" aria-label="石が置かれているマスの割合" aria-valuemin="0" aria-valuemax="64" aria-valuenow="4">6%</span></div>
   <div class="globe-host" id="globe-host">
     <canvas id="globe" tabindex="0" role="application" aria-label="64マスの球体盤。スワイプで回転。候補ボタンで選択、配置ボタンで石を置けます。キーボードは矢印で回転、Nで候補、Enterで配置。"></canvas>
     
-    <div class="coordinate" id="coordinate" aria-hidden="true">DRAG TO ROTATE</div>
+    <div class="coordinate" id="coordinate" aria-hidden="true">スワイプで回転</div>
     <div class="zoom-controls"><button id="zoom-out" aria-label="球体を縮小">−</button><button id="zoom-in" aria-label="球体を拡大">＋</button></div>
   </div>
   <div class="view-controls">
@@ -47,7 +47,7 @@
 <footer><span>64四角形 · 斜めは金色の点で止まる</span><button id="restart">やり直す</button></footer>
 </main>
 <dialog id="rules-dialog" aria-labelledby="rules-title">
-  <div class="dialog-heading"><p class="eyebrow">HOW TO PLAY</p><button class="icon-button" id="rules-close" aria-label="遊び方を閉じる">×</button></div>
+  <div class="dialog-heading"><p class="eyebrow">遊び方</p><button class="icon-button" id="rules-close" aria-label="遊び方を閉じる">×</button></div>
   <h2 id="rules-title">ぐるっと回して、はさもう。</h2>
   <p>1台のスマホで黒・白を交互に操作します。自分の石で相手の石をはさむと反転。最後に石が多い方の勝ちです。</p>
   <div class="rule-steps"><div><b>01</b><p><strong>スワイプで球体を回転</strong><br>2本指で拡大。裏側も自由に見られます。</p></div><div><b>02</b><p><strong>リングをタップして選択</strong><br>「候補を見る」で置けるマスを正面へ。</p></div><div><b>03</b><p><strong>「ここに置く」で確定</strong><br>選択中は反転する石に輪がつきます。</p></div></div>
@@ -56,6 +56,6 @@
   <p class="subtle">PC：ドラッグ・ホイール操作。矢印キーで回転、Nで候補、Enterで配置、Escで選択解除。</p>
   <button class="wide-button" id="rules-done">遊ぶ</button>
 </dialog>
-<dialog id="restart-dialog" aria-labelledby="restart-title"><p class="eyebrow">NEW GAME</p><h2 id="restart-title">最初から始めますか？</h2><p>今の対局を終了し、黒の手番から始めます。</p><div class="dialog-actions"><button id="restart-cancel">続ける</button><button class="primary" id="restart-confirm">やり直す</button></div></dialog>
+<dialog id="restart-dialog" aria-labelledby="restart-title"><p class="eyebrow">もう一度</p><h2 id="restart-title">最初から始めますか？</h2><p>今の対局を終了し、黒の手番から始めます。</p><div class="dialog-actions"><button id="restart-cancel">続ける</button><button class="primary" id="restart-confirm">やり直す</button></div></dialog>
 <noscript>このゲームにはJavaScriptが必要です。ブラウザでJavaScriptを有効にしてください。</noscript>
 </body></html>
