@@ -10,14 +10,25 @@
 <script type="module" src="./game.min.js"></script>
 </head>
 <body>
-<main class="game">
-<header class="masthead"><h1>球体オセロ</h1><span class="local-badge">2人対戦</span></header>
+<section class="mode-menu" id="menu-screen" aria-label="ゲームモード">
+ <header class="menu-heading"><span class="menu-orbit" aria-hidden="true">◉</span><h1>球体オセロ</h1><p>回して、はさんで、ひっくり返そう。</p></header>
+ <div class="mode-options">
+  <button class="mode-card solo-card" id="start-solo"><span class="mode-icon" aria-hidden="true">★</span><span><strong>ソロチャレンジ</strong><small>勝利を重ねて、もっと強いCPUへ</small></span><b id="solo-level">Lv.1</b></button>
+  <button class="mode-card" id="start-friend"><span class="mode-icon" aria-hidden="true">♟</span><span><strong>フレンド対戦</strong><small>合言葉でつながる、友達との一局</small></span><b class="soon-badge">準備中</b></button>
+  <button class="mode-card" id="start-world"><span class="mode-icon" aria-hidden="true">◎</span><span><strong>ワールド対戦</strong><small>世界のプレイヤーと、どこでも対戦</small></span><b class="soon-badge">準備中</b></button>
+ </div>
+ <p class="campaign-record" id="campaign-record">Lv.1からスタート。勝つと次のレベルへ。</p>
+ <div class="menu-bottom"><button id="start-local">同じ端末で2人</button><button id="menu-rules">? 遊び方</button></div>
+ <p class="menu-footnote">64マスの球面オセロ · 進行はこの端末に保存</p>
+</section>
+<main class="game" id="game-screen" hidden>
+<header class="masthead"><h1>球体オセロ</h1><span class="local-badge" id="mode-label">端末2人対戦</span></header>
 <section class="match-header" aria-label="手番と得点">
  <div class="scoreboard">
-  <div class="score-card active" id="black-card"><span class="stone black" aria-hidden="true"></span><span class="player-label">黒</span><strong id="black-score">2</strong><span class="player-note" id="black-note">手番</span></div>
-  <div class="score-card" id="white-card"><span class="stone white" aria-hidden="true"></span><span class="player-label">白</span><strong id="white-score">2</strong><span class="player-note" id="white-note">待機</span></div>
+  <div class="score-card active" id="black-card"><span class="stone black" aria-hidden="true"></span><span class="player-label" id="black-label">黒</span><strong id="black-score">2</strong><span class="player-note" id="black-note">手番</span></div>
+  <div class="score-card" id="white-card"><span class="stone white" aria-hidden="true"></span><span class="player-label" id="white-label">白</span><strong id="white-score">2</strong><span class="player-note" id="white-note">待機</span></div>
  </div>
- <div class="turn-line"><h2 id="turn-title">黒の番です</h2><span id="legal-count">置ける場所 4</span><button id="pass" hidden>パスする</button></div>
+ <div class="turn-line"><h2 id="turn-title">黒の番です</h2><span id="legal-count">置ける場所 4</span><button id="pass" hidden>パスする</button><button id="cpu-retry" hidden>再試行</button></div>
  <p id="message" class="sr-only" role="status" aria-live="polite"></p>
 </section>
 <section class="arena" aria-label="回転できる球体盤面">
@@ -32,20 +43,24 @@
   <span class="toolbar-divider" aria-hidden="true"></span>
   <button class="zoom-button" id="zoom-out" aria-label="球体を縮小">−</button>
   <button class="zoom-button" id="zoom-in" aria-label="球体を拡大">＋</button>
+  <button class="xray-button" id="xray" aria-label="盤面を透視する。配置は前面のみ" aria-pressed="false">透視</button>
  </div>
 </section>
-<footer><span>64マス</span><button id="rules-open">? ルール</button><button id="restart">やり直す</button></footer>
+<footer><button id="menu-open">メニュー</button><span>64マス</span><button id="rules-open">? ルール</button><button id="restart">やり直す</button></footer>
 </main>
 <dialog id="rules-dialog" aria-labelledby="rules-title">
   <div class="dialog-heading"><p class="eyebrow">遊び方</p><button class="icon-button" id="rules-close" aria-label="遊び方を閉じる">×</button></div>
   <h2 id="rules-title">ぐるっと回して、はさもう。</h2>
-  <p>1台のスマホで黒・白を交互に操作します。自分の石で相手の石をはさむと反転。最後に石が多い方の勝ちです。</p>
+  <p>ソロではあなたが黒、CPUが白。端末2人対戦では黒・白を交互に操作します。自分の石で相手の石をはさむと反転。最後に石が多い方の勝ちです。</p>
   <div class="rule-steps"><div><b>01</b><p><strong>スワイプで球体を回転</strong><br>2本指で拡大。裏側も自由に見られます。</p></div><div><b>02</b><p><strong>光るリングにタップで置く</strong><br>合法手だけに置けます。確認操作はありません。</p></div><div><b>03</b><p><strong>裏側のリングも探してみよう</strong><br>「裏側」で反対側へ。「正面」で視点を戻せます。</p></div></div>
   <div class="rule-note"><h3>64枚の四角形で、ぐるっとつながる盤</h3><p>立方体の表面を <strong>4 × 4 × 2</strong> に分割したつながりを保ち、球面上でマスの広さが近くなるよう頂点を調整しています。どのマスも4つの角を持ち、極や継ぎ目に盤の端はありません。</p><p><strong>縦横4方向＋斜め4方向</strong>ではさみます。辺から入ったら反対の辺へ、頂点から入ったら反対の頂点へ進むのが、この盤の「直線」です。継ぎ目でも続きます。</p><p>斜めは、4面が集まる頂点の向かいのマスへ進みます。<strong>金色の点がある8つの頂点では3面しか集まらないため、斜めだけ停止</strong>します。縦横は止まりません。</p><p>同じマスを二度通る前に探索を止めます。置いた石自身で1周まるごとはさむことはできません。</p></div>
+  <p class="subtle">「透視」で盤面だけを半透明にできます。裏側の駒は破線の輪で区別します。置けるのは手前のマスだけ。裏側へ置くときは球体を回してください。</p>
   <p class="subtle">置ける場所がなければパス。両者とも置けなくなった時点で終局します。途中でページを閉じると対局はリセットされます。</p>
   <p class="subtle">PC：ドラッグ・ホイール操作。矢印キーで回転、盤面にフォーカスしてNで候補へ移動、Enterで配置、Escで解除。</p>
   <button class="wide-button" id="rules-done">遊ぶ</button>
 </dialog>
 <dialog id="restart-dialog" aria-labelledby="restart-title"><p class="eyebrow">もう一度</p><h2 id="restart-title">最初から始めますか？</h2><p>今の対局を終了し、黒の手番から始めます。</p><div class="dialog-actions"><button id="restart-cancel">続ける</button><button class="primary" id="restart-confirm">やり直す</button></div></dialog>
+<dialog id="leave-dialog" aria-labelledby="leave-title"><p class="eyebrow">メニュー</p><h2 id="leave-title">メニューへ戻りますか？</h2><p>進行中の対局は終了します。ソロの到達レベルは残ります。</p><div class="dialog-actions"><button id="leave-cancel">続ける</button><button id="leave-confirm">戻る</button></div></dialog>
+<dialog id="online-dialog" aria-labelledby="online-title"><p class="eyebrow">ただいま準備中</p><h2 id="online-title">フレンド対戦</h2><p>通信対戦はまだ開始できません。ソロチャレンジと同じ端末での2人対戦を遊べます。</p><button class="wide-button" id="online-close">メニューへ</button></dialog>
 <noscript>このゲームにはJavaScriptが必要です。ブラウザでJavaScriptを有効にしてください。</noscript>
 </body></html>
