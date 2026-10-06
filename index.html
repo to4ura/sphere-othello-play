@@ -12,7 +12,7 @@
 <body>
 <main class="game">
 <header class="masthead">
-  <div class="wordmark"><span class="logo-orbit" aria-hidden="true">◉</span><div><h1>ORBIT <span>OTHELLO</span></h1><p>球体オセロ <span class="divider">/</span> 64マス</p></div></div>
+  <div class="wordmark"><span class="logo-orbit" aria-hidden="true">◉</span><div><h1>ORBIT <span>OTHELLO</span></h1><p>球体オセロ <span class="divider">/</span> 64四角形</p></div></div>
   <button class="icon-button" id="rules-open" aria-label="遊び方と球面ルールを開く">?</button>
 </header>
 <section class="scoreboard" aria-label="得点">
@@ -44,14 +44,14 @@
   </div>
   <div class="hint-line"><span class="hint-ring"></span><span id="help-line">タップで選択 →「ここに置く」で確定</span></div>
 </section>
-<footer><span>試作ルール：東西は接続 · 両極は境界</span><button id="restart">やり直す</button></footer>
+<footer><span>64四角形 · 斜めは金色の点で止まる</span><button id="restart">やり直す</button></footer>
 </main>
 <dialog id="rules-dialog" aria-labelledby="rules-title">
   <div class="dialog-heading"><p class="eyebrow">HOW TO PLAY</p><button class="icon-button" id="rules-close" aria-label="遊び方を閉じる">×</button></div>
   <h2 id="rules-title">ぐるっと回して、はさもう。</h2>
   <p>1台のスマホで黒・白を交互に操作します。自分の石で相手の石をはさむと反転。最後に石が多い方の勝ちです。</p>
   <div class="rule-steps"><div><b>01</b><p><strong>スワイプで球体を回転</strong><br>2本指で拡大。裏側も自由に見られます。</p></div><div><b>02</b><p><strong>リングをタップして選択</strong><br>「候補を見る」で置けるマスを正面へ。</p></div><div><b>03</b><p><strong>「ここに置く」で確定</strong><br>選択中は反転する石に輪がつきます。</p></div></div>
-  <div class="rule-note"><h3>試作ルール：北極・南極は境界</h3><p>見た目は球体ですが、北極・南極に端がある盤です。南北8段 × 東西8列 ＝ <strong>64マス</strong>。直線は段・列で決めた縦・横・斜めの8方向です。</p><p><strong>東西のA列とH列はつながります。</strong>横・斜めの探索も境界を越えて続きます。<strong>南北の1段と8段は端</strong>なので、極を越えずに止まります。</p><p>一周して置いたマスに戻る前に探索を止めます。置いた石自身を使って、1周まるごとはさむことはできません。</p></div>
+  <div class="rule-note"><h3>64枚の四角形で、ぐるっとつながる盤</h3><p>立方体の表面を <strong>4 × 4 × 2</strong> に分割して球面に丸めています。どのマスも4つの角を持ち、極や継ぎ目に盤の端はありません。</p><p><strong>縦横4方向＋斜め4方向</strong>ではさみます。辺から入ったら反対の辺へ、頂点から入ったら反対の頂点へ進むのが、この盤の「直線」です。継ぎ目でも続きます。</p><p>斜めは、4面が集まる頂点の向かいのマスへ進みます。<strong>金色の点がある8つの頂点では3面しか集まらないため、斜めだけ停止</strong>します。縦横は止まりません。</p><p>同じマスを二度通る前に探索を止めます。置いた石自身で1周まるごとはさむことはできません。</p></div>
   <p class="subtle">置ける場所がなければパス。両者とも置けなくなった時点で終局します。途中でページを閉じると対局はリセットされます。</p>
   <p class="subtle">PC：ドラッグ・ホイール操作。矢印キーで回転、Nで候補、Enterで配置、Escで選択解除。</p>
   <button class="wide-button" id="rules-done">遊ぶ</button>
