@@ -5,25 +5,23 @@
 <meta name="theme-color" content="#4a958a">
 <meta name="description" content="指で球体を回して遊ぶ、64マスの立体オセロ。ソロ・同じ画面で2人・フレンド・ワールド対戦。">
 <title>球体オセロ</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%23285e57' stroke='%23f6c45a' stroke-width='3'/%3E%3Cellipse cx='32' cy='32' rx='12' ry='29' fill='none' stroke='%234a958a'/%3E%3Cpath d='M3 32h58' stroke='%234a958a'/%3E%3Ccircle cx='24' cy='24' r='9' fill='%23f3efc9'/%3E%3Ccircle cx='41' cy='40' r='9' fill='%2324524c'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 84 84'%3E%3Ccircle cx='20' cy='20' r='18' fill='%23142729'/%3E%3Ccircle cx='64' cy='20' r='18' fill='%23f3efc9'/%3E%3Ccircle cx='20' cy='64' r='18' fill='%23f3efc9'/%3E%3Ccircle cx='64' cy='64' r='18' fill='%23142729'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="./style.min.css">
 <script type="module" src="./game.min.js"></script>
 </head>
 <body>
 <section class="mode-menu" id="menu-screen" aria-label="ゲームモード">
- <header class="menu-heading"><span class="menu-orbit" aria-hidden="true">◉</span><h1>球体オセロ</h1><p>回して、はさんで、ひっくり返そう。</p></header>
+ <header class="menu-heading"><svg class="menu-logo" viewBox="0 0 84 84" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#142729"/><circle cx="64" cy="20" r="18" fill="#f3efc9"/><circle cx="20" cy="64" r="18" fill="#f3efc9"/><circle cx="64" cy="64" r="18" fill="#142729"/></svg><h1>球体オセロ</h1></header>
  <div class="mode-options">
   <button class="mode-card solo-card" id="start-solo"><span class="mode-icon" aria-hidden="true">★</span><span><strong>ソロチャレンジ</strong><small>勝利を重ねて、もっと強いCPUへ</small></span><b id="solo-level">Lv.1</b></button>
   <button class="mode-card" id="start-friend"><span class="mode-icon" aria-hidden="true">♟</span><span><strong>フレンド対戦</strong><small>合言葉でつながる、友達との一局</small></span><b class="soon-badge" id="friend-badge">準備中</b></button>
   <button class="mode-card" id="start-world"><span class="mode-icon" aria-hidden="true">◎</span><span><strong>ワールド対戦</strong><small>世界のプレイヤーと、どこでも対戦</small></span><b class="soon-badge" id="world-badge">準備中</b></button>
  </div>
- <p class="campaign-record" id="campaign-record">Lv.1からスタート。勝つと次のレベルへ。</p>
  <button id="online-resume" class="resume-room" hidden>進行中の対局へ戻る</button><p id="menu-connection" class="subtle" role="status"></p>
  <div class="menu-bottom"><button id="start-local">同じ端末で2人</button><button id="menu-rules">? 遊び方</button></div>
  <p class="menu-footnote">64マスの球面オセロ · 進行はこの端末に保存</p>
 </section>
 <main class="game" id="game-screen" hidden>
-<header class="masthead"><h1>球体オセロ</h1><span class="local-badge" id="mode-label">端末2人対戦</span></header>
 <section class="match-header" aria-label="手番と得点">
  <div class="scoreboard">
   <div class="score-card active" id="black-card"><span class="stone black" aria-hidden="true"></span><span class="player-label" id="black-label">黒</span><strong id="black-score">2</strong><span class="player-note" id="black-note">手番</span></div>
@@ -48,7 +46,7 @@
   <button class="xray-button" id="xray" aria-label="盤面を透視する。配置は前面のみ" aria-pressed="false">透視</button>
  </div>
 </section>
-<footer><button id="menu-open">メニュー</button><span>64マス</span><button id="rules-open">? ルール</button><button id="restart">やり直す</button></footer>
+<footer><button id="menu-open">メニュー</button><button id="rules-open">ルール</button><button id="restart">やり直し</button></footer>
 </main>
 <dialog id="rules-dialog" aria-labelledby="rules-title">
   <div class="dialog-heading"><p class="eyebrow">遊び方</p><button class="icon-button" id="rules-close" aria-label="遊び方を閉じる">×</button></div>
