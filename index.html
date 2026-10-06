@@ -48,6 +48,11 @@
 </section>
 <footer><button id="menu-open">メニュー</button><button id="rules-open">ルール</button><button id="restart">やり直し</button></footer>
 </main>
+<dialog id="result-dialog" aria-labelledby="result-title" aria-describedby="result-score result-detail">
+ <div class="dialog-heading"><p class="eyebrow">対局結果</p><button class="icon-button" id="result-close" aria-label="結果を閉じて盤面を見る">×</button></div>
+ <h2 id="result-title"></h2><p id="result-score"></p><p id="result-detail"></p>
+ <div class="dialog-actions result-actions"><button id="result-title-button">タイトルへ</button><button id="result-again" autofocus>もう一度</button></div>
+</dialog>
 <dialog id="rules-dialog" aria-labelledby="rules-title">
   <div class="dialog-heading"><p class="eyebrow">遊び方</p><button class="icon-button" id="rules-close" aria-label="遊び方を閉じる">×</button></div>
   <h2 id="rules-title">ぐるっと回して、はさもう。</h2>
