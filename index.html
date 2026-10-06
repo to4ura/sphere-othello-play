@@ -5,13 +5,13 @@
 <meta name="theme-color" content="#4a958a">
 <meta name="description" content="指で球体を回して遊ぶ、64マスの立体オセロ。ソロ・同じ画面で2人・フレンド・ワールド対戦。">
 <title>球体オセロ</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 84 84'%3E%3Ccircle cx='20' cy='20' r='18' fill='%23142729'/%3E%3Ccircle cx='64' cy='20' r='18' fill='%23f3efc9'/%3E%3Ccircle cx='20' cy='64' r='18' fill='%23f3efc9'/%3E%3Ccircle cx='64' cy='64' r='18' fill='%23142729'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="./sphere-logo.svg">
 <link rel="stylesheet" href="./style.min.css">
 <script type="module" src="./game.min.js"></script>
 </head>
 <body>
 <section class="mode-menu" id="menu-screen" aria-label="ゲームモード">
- <header class="menu-heading"><svg class="menu-logo" viewBox="0 0 84 84" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#142729"/><circle cx="64" cy="20" r="18" fill="#f3efc9"/><circle cx="20" cy="64" r="18" fill="#f3efc9"/><circle cx="64" cy="64" r="18" fill="#142729"/></svg><h1>球体オセロ</h1></header>
+ <header class="menu-heading"><img class="menu-logo" src="./sphere-logo.svg" width="96" height="96" alt="" draggable="false"><h1>球体オセロ</h1></header>
  <div class="mode-options">
   <button class="mode-card solo-card" id="start-solo"><span class="mode-icon" aria-hidden="true">★</span><span><strong>ソロチャレンジ</strong><small>勝利を重ねて、もっと強いCPUへ</small></span><b id="solo-level">Lv.1</b></button>
   <button class="mode-card" id="start-friend"><span class="mode-icon" aria-hidden="true">♟</span><span><strong>フレンド対戦</strong><small>合言葉でつながる、友達との一局</small></span><b class="soon-badge" id="friend-badge">準備中</b></button>
