@@ -71,12 +71,25 @@
 <dialog id="online-dialog" aria-labelledby="online-title"><p class="eyebrow">オンラインで、ひと勝負。</p><h2 id="online-title">フレンド対戦</h2>
  <p id="online-unavailable">通信対戦は準備中です。ソロと同じ端末の2人対戦で遊べます。</p>
  <div id="online-form" hidden><div id="friend-form">
-  <button class="wide-button" id="online-create">部屋をつくる</button><p class="subtle">招待を受け取ったら、下に入力して参加できます。</p>
+  <button class="wide-button" id="online-create">部屋をつくる</button><p class="subtle" id="friend-setup-note">招待を受け取ったら、下に入力して参加できます。</p>
   <label class="room-field">部屋番号<input id="room-code" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="6桁の番号"></label>
-  <label class="room-field">合言葉<input id="room-secret" maxlength="16" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="16文字の合言葉"></label>
+  <label class="room-field" id="legacy-secret-field">合言葉<input id="room-secret" maxlength="16" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="16文字の合言葉"></label>
   <button class="wide-button" id="online-join">部屋に参加する</button></div>
   <button class="wide-button" id="online-match">対戦相手を探す</button>
   <p class="subtle">先に入った人が黒です。ページを開いたままお待ちください。対局中に90秒以上つながらないと終了します。</p>
+ </div>
+ <div id="friend-lobby" hidden>
+  <p class="subtle" id="friend-lobby-note"></p>
+  <div id="friend-host-lobby" hidden>
+   <p class="friend-room-heading">部屋番号 <strong id="friend-code"></strong></p>
+   <button class="wide-button secondary" id="copy-friend-code">番号をコピー</button>
+   <p class="subtle">参加者はホストと承認した相手の2人です。観戦はできません。</p>
+   <p id="friend-empty" class="subtle"></p>
+   <div id="friend-requests"></div>
+   <button class="wide-button secondary" id="friend-intake">新しい申請を停止する</button>
+  </div>
+  <div id="friend-guest-lobby" hidden><p class="friend-room-heading">申請番号 <strong id="friend-request-number"></strong></p><p id="friend-request-status" role="status" aria-live="polite"></p></div>
+  <p class="subtle" id="friend-expiry"></p>
  </div><p id="online-status" role="status" aria-live="polite"></p><button class="wide-button secondary" id="online-close">メニューへ</button>
 </dialog>
 <noscript>このゲームにはJavaScriptが必要です。ブラウザでJavaScriptを有効にしてください。</noscript>
