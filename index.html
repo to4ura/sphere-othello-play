@@ -21,6 +21,8 @@
  </div>
  <button id="online-resume" class="resume-room" hidden>進行中の対局へ戻る</button><p id="menu-connection" class="subtle" role="status"></p>
  <div class="menu-bottom"><button id="start-local">同じ端末で2人</button><button id="menu-rules">? 遊び方</button></div>
+ <button id="account-open" class="account-menu-button" hidden>マイページ</button>
+ <button id="rank-open" class="account-menu-button rank-menu-button" hidden>ランク対戦</button><button id="rank-resume" class="resume-room" hidden>ランク対戦に戻る</button>
  <p class="menu-footnote">64マスの球面オセロ · 進行はこの端末に保存</p>
 </section>
 <main class="game" id="game-screen" hidden>
@@ -62,12 +64,13 @@
   <div class="rule-steps"><div><b>01</b><p><strong>スワイプで球体を回転</strong><br>2本指で拡大。裏側も自由に見られます。</p></div><div><b>02</b><p><strong>光るリングにタップで置く</strong><br>合法手だけに置けます。確認操作はありません。</p></div><div><b>03</b><p><strong>裏側のリングも探してみよう</strong><br>「裏側」で反対側へ。「正面」で視点を戻せます。</p></div></div>
   <div class="rule-note"><h3>64枚の四角形で、ぐるっとつながる盤</h3><p>立方体の表面を <strong>4 × 4 × 2</strong> に分割したつながりを保ち、球面上の円に沿って格子を並べています。マスの広さには少し違いがあります。どのマスも4つの角を持ち、極や継ぎ目に盤の端はありません。</p><p><strong>縦横4方向＋斜め4方向</strong>ではさみます。辺から入ったら反対の辺へ、頂点から入ったら反対の頂点へ進むのが、この盤の「直線」です。継ぎ目でも続きます。</p><p>斜めは、4面が集まる頂点の向かいのマスへ進みます。<strong>金色の点がある8つの頂点では3面しか集まらないため、斜めだけ停止</strong>します。縦横は止まりません。</p><p>同じマスを二度通る前に探索を止めます。置いた石自身で1周まるごとはさむことはできません。</p></div>
   <p class="subtle">「透視」で盤面だけを半透明にできます。裏側の駒は破線の輪で区別します。置けるのは手前のマスだけ。裏側へ置くときは球体を回してください。</p>
-  <p class="subtle">置ける場所がなければパス。両者とも置けなくなった時点で終局します。ソロ・端末2人対戦はページを閉じるとリセットされます。通信対戦は同じブラウザから復帰できます。対局中に90秒以上接続が切れると終了し、片方だけ切れた場合はそのプレイヤーの負けです。</p>
+  <p class="subtle">置ける場所がなければパス。両者とも置けなくなった時点で終局します。ソロ・端末2人対戦はページを閉じるとリセットされます。フレンド・通常のワールド対戦は同じブラウザから復帰できます。対局中に90秒以上接続が切れると終了し、片方だけ切れた場合はそのプレイヤーの負けです。</p>
+  <p id="rank-rules" class="subtle" hidden>ランク対戦は同じアカウントで復帰できます。現在、持ち時間の制限はありません。</p>
   <p class="subtle">PC：ドラッグ・ホイール操作。矢印キーで回転、盤面にフォーカスしてNで候補へ移動、Enterで配置、Escで解除。</p>
   <button class="wide-button" id="rules-done">遊ぶ</button>
 </dialog>
 <dialog id="restart-dialog" aria-labelledby="restart-title"><p class="eyebrow">もう一度</p><h2 id="restart-title">最初から始めますか？</h2><p>今の対局を終了し、黒の手番から始めます。</p><div class="dialog-actions"><button id="restart-cancel">続ける</button><button class="primary" id="restart-confirm">やり直す</button></div></dialog>
-<dialog id="leave-dialog" aria-labelledby="leave-title"><p class="eyebrow">メニュー</p><h2 id="leave-title">メニューへ戻りますか？</h2><p>進行中の対局は終了します。ソロの到達レベルは残ります。</p><div class="dialog-actions"><button id="leave-cancel">続ける</button><button id="leave-confirm">戻る</button></div></dialog>
+<dialog id="leave-dialog" aria-labelledby="leave-title"><p class="eyebrow">メニュー</p><h2 id="leave-title">メニューへ戻りますか？</h2><p id="leave-description">進行中の対局は終了します。ソロの到達レベルは残ります。</p><div class="dialog-actions"><button id="leave-cancel">続ける</button><button id="leave-confirm">戻る</button></div><button id="rank-suspend" class="wide-button secondary" hidden>中断してメニューへ</button></dialog>
 <dialog id="online-dialog" aria-labelledby="online-title"><p class="eyebrow">オンラインで、ひと勝負。</p><h2 id="online-title">フレンド対戦</h2>
  <p id="online-unavailable">通信対戦は準備中です。ソロと同じ端末の2人対戦で遊べます。</p>
  <div id="online-form" hidden><div id="friend-form">
@@ -92,5 +95,39 @@
   <p class="subtle" id="friend-expiry"></p>
  </div><p id="online-status" role="status" aria-live="polite"></p><button class="wide-button secondary" id="online-close">メニューへ</button>
 </dialog>
+<dialog id="account-dialog" aria-labelledby="account-title">
+ <div class="dialog-heading"><div><p class="eyebrow">あなたの、球のオセロ</p><h2 id="account-title">マイページ</h2></div><button id="account-close" class="icon-button" aria-label="マイページを閉じる">×</button></div>
+ <div id="account-guest">
+  <p>名前を登録して、ソロの進行を保存。<br>新しい端末にも引き継げます。</p>
+  <button id="account-register" class="wide-button">名前を登録する</button>
+  <button id="account-receive" class="wide-button secondary">引き継ぎコードを使う</button>
+  <p class="subtle">メールアドレス・パスワードは不要です。コードを発行する前にブラウザーの保存情報を失うと、アカウントを復元できません。</p>
+ </div>
+ <div id="account-profile" hidden>
+  <div class="account-identity"><span id="account-avatar" class="account-avatar" data-icon="0" aria-hidden="true"></span><div><h3 id="account-name-display"></h3><p id="account-rank"></p></div><button id="account-edit" class="account-small-button">編集</button></div>
+  <section class="account-world" aria-label="ワールド戦績"><div class="account-section-heading"><h3>ワールド戦績</h3><span id="account-world-tag" class="account-tag">準備中</span></div><div class="account-record"><span><b id="account-world-wins">—</b>勝ち</span><span><b id="account-world-losses">—</b>負け</span><span><b id="account-world-draws">—</b>引き分け</span></div><p id="account-world-note" class="subtle">戦績・昇段の集計は準備中です。ソロやフレンド対戦の結果は含みません。</p><div id="account-meijin" hidden><h3 id="account-meijin-current"></h3><p id="account-meijin-history" class="subtle"></p></div></section>
+  <section class="account-solo"><div class="account-section-heading"><h3>ソロ到達レベル</h3><strong id="account-solo-level">Lv.1</strong></div><p id="account-sync-note" class="subtle"></p><button id="account-sync" class="account-small-button">保存した情報を確認</button>
+   <div id="account-import-box" class="account-import-box" hidden><p id="account-import-description"></p><div class="dialog-actions"><button id="account-import-later">保存しない</button><button id="account-import">この端末のLvを保存</button></div></div>
+  </section>
+  <section class="account-transfer"><h3>新しい端末へ</h3><p class="subtle">コードは発行から15分・1回のみ。再発行すると前のコードは無効になります。別の端末で使うと、この端末はログアウトします。</p><button id="account-issue" class="wide-button">引き継ぎコードを発行</button><p class="subtle">発行前に保存情報を失うと復元できません。コードは他の人に見せないでください。</p></section>
+  <button id="account-logout" class="account-text-button">ログアウト</button>
+ </div>
+ <div id="account-register-panel" hidden><p>好きな名前とアイコンを選んでください。</p><label class="room-field">名前（1〜20文字）<input id="account-register-name" maxlength="40" autocomplete="off" placeholder="あなたの名前"></label><div id="account-register-icons" class="account-icons" role="group" aria-label="登録アイコン"></div><p class="subtle">名前は本人確認の証明ではありません。メールでの復元はできないため、引き継ぎコードを安全に保存してください。</p><button id="account-register-submit" class="wide-button">この名前で登録する</button></div>
+ <div id="account-edit-panel" hidden><label class="room-field">名前（1〜20文字）<input id="account-edit-name" maxlength="40" autocomplete="off"></label><div id="account-edit-icons" class="account-icons" role="group" aria-label="プロフィールアイコン"></div><button id="account-edit-save" class="wide-button">変更を保存</button></div>
+ <div id="account-receive-panel" hidden><p>前の端末で発行したコードを入力してください。引き継ぐと前の端末はログアウトします。</p><label class="room-field">引き継ぎコード<textarea id="account-receive-code" class="account-code" rows="3" maxlength="128" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="64文字のコード"></textarea></label><button id="account-receive-submit" class="wide-button">この端末に引き継ぐ</button></div>
+ <div id="account-transfer-panel" hidden><h3>コードを安全に保存</h3><p id="account-code-expiry" class="subtle"></p><textarea id="account-code" class="account-code" rows="3" readonly autocomplete="off" spellcheck="false" aria-label="発行した引き継ぎコード"></textarea><div class="dialog-actions"><button id="account-copy">コピー</button><button id="account-save-code">ファイルに保存</button></div><p class="subtle">この画面を閉じるとコードの表示は消えます。安全な場所に保存してから、新しい端末で「引き継ぎコードを使う」を選んでください。</p></div>
+ <div id="account-pending" hidden><h3>処理の結果を確認</h3><p>通信が切れても、確認用の情報はこの端末に残ります。先に結果を確認するか、安全に処理を取り消してください。</p><button id="account-check" class="wide-button">状況を確認</button><button id="account-cancel-pending" class="wide-button secondary">処理を取り消す</button></div>
+ <div id="account-logout-panel" hidden><h3>ログアウトしますか？</h3><p>使える引き継ぎコードがないと、このアカウントには戻れません。ソロの保存情報はアカウントに残ります。</p><button id="account-logout-confirm" class="wide-button">ログアウトする</button></div>
+ <p id="account-status" role="status" aria-live="polite"></p><button id="account-back" class="account-text-button" hidden>マイページへ戻る</button>
+</dialog>
 <noscript>このゲームにはJavaScriptが必要です。ブラウザでJavaScriptを有効にしてください。</noscript>
+<dialog id="rank-dialog" aria-labelledby="rank-title"><p class="eyebrow">世界と、球の上で。</p><h2 id="rank-title">ランク対戦</h2>
+ <p id="rank-own-profile"></p><p id="rank-wait" hidden role="status"></p>
+ <p class="subtle">最初は近い実力の相手を探します。20秒・40秒で範囲を広げ、40秒以降はそれ以上広げません。最初の10局は測定中です。</p>
+ <p id="rank-long-wait" class="subtle" hidden>参加者が少ないようです。このまま待つか、待機を取り消せます。</p>
+ <p class="subtle">待機中はページを開いたままにしてください。対局中は同じアカウントで復帰できます。現在、持ち時間の制限はありません。</p>
+ <button id="rank-register" class="wide-button">名前を登録して参加</button><button id="rank-join" class="wide-button">対戦相手を探す</button>
+ <button id="rank-cancel" class="wide-button secondary" hidden>待機を取り消す</button><p id="rank-status" role="status" aria-live="polite"></p>
+ <button id="rank-retry" class="wide-button" hidden>再接続</button><button id="rank-close" class="wide-button secondary">メニューへ</button>
+</dialog>
 </body></html>
