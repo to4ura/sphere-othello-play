@@ -20,7 +20,7 @@
   <button class="mode-card" id="start-world"><span class="mode-copy"><strong>ワールド対戦</strong><small>世界のプレイヤーと、どこでも対戦</small></span><b class="soon-badge" id="world-badge">準備中</b></button>
  </div>
  <button id="online-resume" class="resume-room" hidden>進行中の対局へ戻る</button><p id="menu-connection" class="subtle" role="status"></p>
- <div class="menu-bottom"><button id="start-local">同じ端末で2人</button><button id="menu-rules">? 遊び方</button></div>
+ <div class="menu-bottom"><button id="start-local">同じ端末で2人</button><button id="menu-sound" type="button" data-sound-toggle aria-pressed="true">SE: ON</button><button id="menu-rules">? 遊び方</button></div>
  <button id="account-open" class="account-menu-button" hidden>マイページ</button>
  <button id="rank-open" class="account-menu-button rank-menu-button" hidden>ランク対戦</button><button id="rank-resume" class="resume-room" hidden>ランク対戦に戻る</button>
  <p class="menu-footnote">64マスの球面オセロ · 進行はこの端末に保存</p>
@@ -50,7 +50,7 @@
   <button class="xray-button" id="xray" aria-label="盤面を透視する。配置は前面のみ" aria-pressed="false">透視</button>
  </div>
 </section>
-<footer><button id="menu-open">メニュー</button><button id="rules-open">ルール</button><button id="restart">やり直し</button></footer>
+<footer><button id="game-sound" type="button" data-sound-toggle aria-pressed="true">SE: ON</button><button id="menu-open">メニュー</button><button id="rules-open">ルール</button><button id="restart">やり直し</button></footer>
 </main>
 <dialog id="result-dialog" aria-labelledby="result-title" aria-describedby="result-score result-detail">
  <div class="dialog-heading"><p class="eyebrow">対局結果</p><button class="icon-button" id="result-close" aria-label="結果を閉じて盤面を見る">×</button></div>
